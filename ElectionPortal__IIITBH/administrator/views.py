@@ -6,7 +6,7 @@ from voting.forms import *
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.conf import settings
-import json  # Not used
+import json
 from django_renderpdf.views import PDFView
 
 
@@ -22,7 +22,7 @@ def find_n_winners(data, n):
         if len(candidate_data) == 0:
             continue
         this_winner = max(candidate_data, key=lambda x: x['votes'])
-        # TODO: Check if None
+        # TODO: 
         this = this_winner['name'] + \
             " with " + str(this_winner['votes']) + " votes"
         final_list.append(this)

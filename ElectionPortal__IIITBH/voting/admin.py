@@ -3,9 +3,9 @@ from django.contrib import admin
 from .models import Voter, Position, Candidate, Votes
 
 class VoterAdmin(admin.ModelAdmin):
-    list_display = ('admin', 'phone', 'verified', 'voted', 'otp_sent')
-    search_fields = ('admin__email', 'admin__first_name', 'admin__last_name', 'phone')
-    list_filter = ('verified', 'voted')
+    list_display = ('admin', 'voted')
+    search_fields = ('admin__email', 'admin__first_name', 'admin__last_name')
+    list_filter = ('voted',)
 
 class PositionAdmin(admin.ModelAdmin):
     list_display = ('name', 'max_vote', 'priority')

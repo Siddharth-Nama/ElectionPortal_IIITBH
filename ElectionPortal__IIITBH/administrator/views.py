@@ -391,3 +391,47 @@ def resetVote(request):
     Voter.objects.all().update(voted=False, verified=False, otp=None)
     messages.success(request, "All votes has been reset")
     return redirect(reverse('viewVotes'))
+
+
+import openpyxl
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def export_votes(request):
+    # Create a new Excel workbook
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Votes"
+
+    # Add headers
+    headers = ['Voter\'s Name', 'Candidate Voted For', 'Position']
+    ws.append(headers)
+
+    # Retrieve votes from the database
+    votes = Votes.objects.all()
+
+    # Add data rows
+    for vote in votes:
+        # Extract the voter's name
+        voter_name = f"{vote.voter.admin.first_name} {vote.voter.admin.last_name}"
+
+        # Extract the candidate's name
+        candidate_name = vote.candidate.fullname
+
+        # Extract the position name
+        position_name = vote.position.name
+
+        # Append the extracted information to the Excel sheet
+        ws.append([voter_name, candidate_name, position_name])
+
+    # Set the response headers for Excel file download
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+    response['Content-Disposition'] = 'attachment; filename=votes.xlsx'
+
+    # Save the workbook to the response
+    wb.save(response)
+
+    return response

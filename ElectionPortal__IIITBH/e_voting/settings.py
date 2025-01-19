@@ -84,12 +84,8 @@ WSGI_APPLICATION = 'e_voting.wsgi.application'
 DATABASES = {
     #   You can use this :
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydatabase',
-        'USER': 'mydatabaseuser',
-        'PASSWORD': 'mypassword',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 
     # 'default': {
@@ -158,5 +154,12 @@ AUTHENTICATION_BACKENDS = ['account.email_backend.EmailBackend']
 ELECTION_TITLE_PATH = os.path.join(
     BASE_DIR, 'election_title.txt')  # Election Title File
 
-SEND_OTP = False  # If you toggle this to False, Kindly use 0000 as your OTP
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # or your email provider's SMTP server
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'siddharthnama2003@gmail.com'
+EMAIL_HOST_PASSWORD = 'yuod ewpb dycz wccg'
+DEFAULT_FROM_EMAIL = 'siddharthnama2003@gmail.com'

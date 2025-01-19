@@ -2,6 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
+from django.utils.translation import gettext_lazy as _
 
 class CustomUserAdmin(UserAdmin):
     # Define fields to display in the admin panel
@@ -28,3 +29,8 @@ class CustomUserAdmin(UserAdmin):
 
 # Register the CustomUser model with CustomUserAdmin configuration
 admin.site.register(CustomUser, CustomUserAdmin)
+
+# Customize admin site header and title
+admin.site.site_header = _("IIITBH SGC Election Portal")
+admin.site.site_title = _("IIITBH SGC Election Portal Admin")
+admin.site.index_title = _("Welcome to the IIITBH SGC Election Portal Admin Dashboard")

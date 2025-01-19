@@ -31,9 +31,9 @@ urlpatterns = [
     # * Votes
     path('votes/view', views.viewVotes, name='viewVotes'),
     path('votes/reset/', views.resetVote, name='resetVote'),
-    path('votes/print/', views.PrintView.as_view(), name='printResult'),
+    path('votes/print/', views.PrintView.as_view(), name='printResult'),    
 
-
-
+    # * Election Excel sheet   
+    path('export_votes/', views.export_votes, name='export_votes'),
 
 ]

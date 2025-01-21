@@ -405,25 +405,25 @@ def export_votes(request):
     ws.title = "Votes"
 
     # Add headers
-    headers = ['Voter\'s Name', 'Candidate Voted For', 'Position']
+    headers = ['Voter\'s Name','Voter\'s email id', 'Candidate Voted For','Candidate email id', 'Position']
     ws.append(headers)
 
     # Retrieve votes from the database
-    votes = Votes.objects.all()
+    votes = Votes.objects.all().order_by('candidate__position__name', 'candidate__fullname')
 
     # Add data rows
     for vote in votes:
         # Extract the voter's name
         voter_name = f"{vote.voter.admin.first_name} {vote.voter.admin.last_name}"
-
+        voter_email = vote.voter.admin.email
         # Extract the candidate's name
         candidate_name = vote.candidate.fullname
-
+        candidate_email = vote.candidate.email
         # Extract the position name
         position_name = vote.position.name
 
         # Append the extracted information to the Excel sheet
-        ws.append([voter_name, candidate_name, position_name])
+        ws.append([voter_name,voter_email, candidate_name,candidate_email, position_name])
 
     # Set the response headers for Excel file download
     response = HttpResponse(

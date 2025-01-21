@@ -25,6 +25,8 @@ class Candidate(models.Model):
     photo = models.ImageField(upload_to="candidates")
     bio = models.TextField()
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=254)
+    roll_number = models.CharField(max_length=50)
 
     def __str__(self):
         return self.fullname
@@ -34,3 +36,4 @@ class Votes(models.Model):
     voter = models.ForeignKey(Voter, on_delete=models.CASCADE)
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
     candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    

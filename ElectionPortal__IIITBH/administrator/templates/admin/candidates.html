@@ -12,8 +12,6 @@
   <table id="example1" class="table table-bordered">
       <thead>
           <th>Full Name</th>
-          <th>Candidate email</th>
-          <th>Candidate roll number</th>
           <th>Position</th>
           <th>Bio</th>
           <th>Avatar</th>
@@ -24,8 +22,6 @@
       
     <tr>
       <td>{{ candidate.fullname }}</td>
-      <td>{{ candidate.email }}</td>
-      <td>{{ candidate.roll_number }}</td>
       <td>{{ candidate.position }}</td>
       <td>{{ candidate.bio }}</td>
       <td><img src="/media/{{ candidate.photo }}" width="80" height="80" alt="{{ candidate.fullname }}'s Avatar" class="img img-fluid"></td>

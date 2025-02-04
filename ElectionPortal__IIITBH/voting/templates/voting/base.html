@@ -89,10 +89,91 @@
       .votelist {
         font-size: 17px;
       }
+
+      /* Custom Header Styles */
+      .header {
+        background-color: #ffffff;
+        padding: 10px  0px;
+        padding-bottom: 0px;
+      }
+
+      .header-container {
+        display: flex;
+        align-items: center;
+      }
+
+      .logo {
+      
+        width: auto;
+    max-width: 1000px; /* Adjust based on your logo size */
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    transition: transform 0.3s ease;
+      
+      }
+
+      .text-content {
+        text-align: left;
+      }
+
+      .header-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .navbar {
+        background-color: #d4aa00;
+      }
+
+      .navbar ul {
+        display: flex;
+        list-style: none;
+        justify-content: center;
+        padding: 10px 0;
+      }
+
+      .navbar li {
+        margin: 0 15px;
+      }
+
+      .navbar a {
+        text-decoration: none;
+        color: #000;
+        font-weight: bold;
+        font-size: 2.5rem;
+      }
+
+      .navbar a:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   
-  <body class="hold-transition login-page" style="background: url('{% static "images/college_background.jpeg" %}') no-repeat center center fixed; background-size: cover;">
+  <body
+    class="hold-transition login-page"
+    style="background: url('{% static "images/college_background.jpeg" %}') no-repeat center center fixed; background-size: cover;"
+  >
+    <!-- IIIT Bhagalpur Header -->
+    <header class="header">
+      <div class="header-container">
+        <img src="{% static 'images/iiit_logo.png' %}" alt="IIIT Bhagalpur Logo" class="logo">
+        
+      </div>
+      <nav class="navbar">
+        <ul>
+          
+          <li><a href="#">IIITBH STUDENT GYMKHANA COUNCIL ELECTION VOTING SYSTEM</a></li>
+      
+      </nav>
+    </header>
+
     {% block content %} {% endblock content %}
     <!-- jQuery 3 -->
     <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
@@ -129,11 +210,6 @@
       });
     </script>
     {% if messages %} {% for message in messages %}
-
-    <!-- <script>
-        swal("{{ message.tags|title }}", "{{ message }}", "{{ message.tags }}");
-    </script> -->
-
     <script>
       toastr.{{ message.tags }}('{{ message }}', '{{ message.tags|title }}');
     </script>

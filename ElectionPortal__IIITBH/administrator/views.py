@@ -157,7 +157,6 @@ def view_voter_by_id(request):
         voter = voter[0]
         context['first_name'] = voter.admin.first_name
         context['last_name'] = voter.admin.last_name
-        context['phone'] = voter.phone
         context['id'] = voter.id
         context['email'] = voter.admin.email
     return JsonResponse(context)

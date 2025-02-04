@@ -18,4 +18,4 @@ class PositionForm(FormSettings):
 class CandidateForm(FormSettings):
     class Meta:
         model = Candidate
-        fields = '__all__'
+        fields = ['fullname', 'bio', 'position', 'photo']

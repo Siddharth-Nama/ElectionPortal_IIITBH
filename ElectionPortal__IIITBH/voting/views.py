@@ -20,86 +20,79 @@ def index(request):
 
 def generate_ballot(display_controls=False):
     positions = Position.objects.order_by('priority').all()
-    output = ""
-    candidates_data = ""
+    output = '<div id="ballot-container">'
     num = 1
-    # return None
-    for position in positions:
+    total_positions = len(positions)
+    
+    for index, position in enumerate(positions):
         name = position.name
         position_name = slugify(name)
         candidates = Candidate.objects.filter(position=position)
+        candidates_data = '<div class="candidates-row">'
+        
         for candidate in candidates:
             if position.max_vote > 1:
-                instruction = "You may select up to " + \
-                    str(position.max_vote) + " candidates"
-                input_box = '<input type="checkbox" value="'+str(candidate.id)+'" class="flat-red ' + \
-                    position_name+'" name="' + \
-                    position_name+"[]" + '">'
+                instruction = f"You may select up to {position.max_vote} candidates"
+                input_box = f'<input type="checkbox" value="{candidate.id}" class="flat-red {position_name}" name="{position_name}[]">'
             else:
                 instruction = "Select only one candidate"
-                input_box = '<input value="'+str(candidate.id)+'" type="radio" class="flat-red ' + \
-                    position_name+'" name="'+position_name+'">'
-            image = "/media/" + str(candidate.photo)
-            candidates_data = candidates_data + f'''
-                <li>
-                    {input_box}
-                    <button type="button" class="btn btn-primary btn-sm btn-flat clist platform" 
-                            data-fullname="{candidate.fullname}" 
-                            data-bio="{candidate.bio}">
-                        <i class="fa fa-search"></i> Platform
-                    </button>
-                    <img src="{image}" 
-                         height="100px" 
-                         width="100px" 
-                         class="clist">
-                    <span class="cname clist">
-                        Name :- {candidate.fullname}
+                input_box = f'<input value="{candidate.id}" type="radio" class="flat-red {position_name}" name="{position_name}">'
+            image = f"/media/{candidate.photo}"
+            candidates_data += f"""
+                <div class="candidate-item">
+                    <div class="candidate-content">
+                        {input_box}
+                        <img src="{image}" height="100px" width="100px" class="clist">
+                        <span class="cname clist">{candidate.fullname}</span>
+                        <button type="button" class="btn btn-primary btn-sm btn-flat clist platform" 
+                            data-fullname="{candidate.fullname}" data-bio="{candidate.bio}">
+                            <i class="fa fa-search"></i> Platform
+                        </button>
+                    </div>
+                </div>
+            """
+        candidates_data += '</div>'
+
+        prev_button = f"""
+            <button class="prev-position" {'disabled' if index == 0 else ''} 
+                    onclick="navigateToPosition({index - 1})">Previous</button>
+        """ if index > 0 else ""
+
+        next_button = f"""
+            <button class="next-position" {'disabled' if index == total_positions - 1 else ''} 
+                    onclick="navigateToPosition({index + 1})">Next</button>
+        """ if index < total_positions - 1 else ""
+
+        output += f"""
+        <div class="ballot-position" id="position-{index}" style="display: {'block' if index == 0 else 'none'};">
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><b>{name}</b></h3>
+                </div>
+                <div class="box-body">
+                    <p>{instruction}
+                    <span class="pull-right">
+                        <button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="{position_name}">
+                            <i class="fa fa-refresh"></i> Reset
+                        </button>
                     </span>
-                    <span class="cemail clist">
-                     Email :- {candidate.email}
-                     </span>
-                    <span class="croll clist">
-                        Roll Number :- {candidate.roll_number}
-                        </span>
-                </li>
-            '''
-        up = ''
-        if position.priority == 1:
-            up = 'disabled'
-        down = ''
-        if position.priority == positions.count():
-            down = 'disabled'
-        output = output + f"""<div class="row">	<div class="col-xs-12"><div class="box box-solid" id="{position.id}">
-             <div class="box-header with-border">
-            <h3 class="box-title"><b>{name}</b></h3>"""
-
-        if display_controls:
-            output = output + f""" <div class="pull-right box-tools">
-        <button type="button" class="btn btn-default btn-sm moveup" data-id="{position.id}" {up}><i class="fa fa-arrow-up"></i> </button>
-        <button type="button" class="btn btn-default btn-sm movedown" data-id="{position.id}" {down}><i class="fa fa-arrow-down"></i></button>
-        </div>"""
-
-        output = output + f"""</div>
-        <div class="box-body">
-        <p>{instruction}
-        <span class="pull-right">
-        <button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="{position_name}"><i class="fa fa-refresh"></i> Reset</button>
-        </span>
-        </p>
-        <div id="candidate_list">
-        <ul>
-        {candidates_data}
-        </ul>
-        </div>
-        </div>
-        </div>
-        </div>
+                    </p>
+                    <div class="candidate-list">
+                        {candidates_data}
+                    </div>
+                </div>
+                <div class="position-navigation">
+                    {prev_button}
+                    {next_button}
+                </div>
+            </div>
         </div>
         """
         position.priority = num
         position.save()
-        num = num + 1
-        candidates_data = ''
+        num += 1
+
+    output += '</div>'
     return output
 
 
@@ -129,7 +122,9 @@ def show_ballot(request):
     context = {
         'ballot': ballot
     }
+    print('----------context-----------', context)
     return render(request, "voting/voter/ballot.html", context)
+
 
 
 def preview_vote(request):

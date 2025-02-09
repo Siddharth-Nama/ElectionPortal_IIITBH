@@ -204,7 +204,7 @@ def preview_vote(request):
 
 def submit_ballot(request):
     if request.method != 'POST':
-        messages.error(request, "Please, browse the system properly")
+        messages.error(request, "Please, browse the system properly")            
         return redirect(reverse('show_ballot'))
 
     # Verify if the voter has voted or not

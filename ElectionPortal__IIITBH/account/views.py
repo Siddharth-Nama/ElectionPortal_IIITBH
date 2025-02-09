@@ -36,8 +36,8 @@ def account_login(request):
                 print('-------voter-------')
                 return redirect(reverse("voterDashboard"))
         else:
-            api_url = "http://localhost:8000/api/election/verifyUser"
-            response = requests.post(api_url, json={"email": email})
+            api_url = "http://10.4.3.83:2000/api/election/verifyUser"
+            response = requests.post(api_url, json={"email": email, "password":password})
             print('--------------first response----------------', response)
             if response.status_code == 200:
                 data = response.json()
@@ -48,16 +48,9 @@ def account_login(request):
                     return redirect("/")
                 
                 else:
-                    new_user = CustomUser.objects.create(
-                        email=data["email"],
-                        username=data.get("username", email),  # Default to email if username is missing
-                        password=make_password(password),  # Hash password before saving
-                        first_name=data.get("name", ""),
-                        last_name=data.get("last_name", ""),
-                        user_type='2'
-                    )
+                    
                     print('---------------fourth----------')
-                    login(request, new_user)
+                    login(request, data)
                     return redirect(reverse("voterDashboard"))
             print('----------------fifth---------------')
             messages.error(request, "Invalid details")

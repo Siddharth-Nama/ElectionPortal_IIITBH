@@ -4,7 +4,7 @@ from .models import Voter, Position, Candidate, Votes
 
 class VoterAdmin(admin.ModelAdmin):
     list_display = ('admin', 'voted')
-    search_fields = ('admin__email', 'admin__first_name', 'admin__last_name')
+    search_fields = ('admin__email', 'admin__first_name', 'admin__last_name', 'roll')
     list_filter = ('voted',)
 
 class PositionAdmin(admin.ModelAdmin):

@@ -6,9 +6,9 @@ from account.models import CustomUser
 class Voter(models.Model):
     admin = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     voted = models.BooleanField(default=False)
-
+    roll = models.CharField(default="12345678", max_length=15)
     def __str__(self):
-        return self.admin.first_name + ", " + self.admin.last_name
+        return self.admin.first_name + ", " + self.admin.last_name + ", " + self.roll
 
 
 class Position(models.Model):

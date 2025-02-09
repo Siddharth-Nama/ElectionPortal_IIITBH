@@ -11,20 +11,18 @@
 <div class="box-body">
   <table id="example1" class="table table-bordered">
       <thead>
-          <th>Lastname</th>
-          <th>Firstname</th>
+          <th>Voter Name</th>
           <th>Email</th>
-          <th>Phone</th>
+          <th>Roll Number</th>
           <th>Action</th>
       </thead>
       <tbody>
     {% for voter in voters %}
       
     <tr>
-      <td>{{ voter.admin.last_name }}</td>
-      <td>{{ voter.admin.first_name }}</td>
+      <td>{{ voter.admin.first_name }} {{ voter.admin.last_name }}</td>
       <td>{{ voter.admin.email }}</td>
-      <td>{{ voter.phone }}</td>
+      <td>{{ voter.roll }}</td>
       
       <td>
         <button class='btn btn-success btn-sm edit btn-flat' data-id='{{ voter.id }}'><i class='fa fa-edit'></i> Edit</button>
@@ -115,10 +113,10 @@
                 </div>
             </div>
             <div class="form-group">
-              <label for="edit_phone" class="col-sm-3 control-label">Phone</label>
+              <label for="edit_roll" class="col-sm-3 control-label">Roll Number</label>
 
               <div class="col-sm-9">
-                <input type="text" class="form-control" id="edit_phone" name="phone">
+                <input type="text" class="form-control" id="edit_roll" name="roll">
               </div>
           </div> 
 
@@ -197,7 +195,7 @@
               $('.id').val(response.id);
               $('#edit_firstname').val(response.first_name);
               $('#edit_lastname').val(response.last_name);
-              $('#edit_phone').val(response.phone);
+              $('#edit_roll').val(response.roll);
               $('#edit_email').val(response.email);
               $('.fullname').html(response.first_name + ' ' + response.last_name);
           }

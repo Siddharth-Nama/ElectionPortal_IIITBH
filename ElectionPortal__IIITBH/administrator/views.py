@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 import json
 from django_renderpdf.views import PDFView
-
+from administrator.passwordsofVoters import passwords
 
 def find_n_winners(data, n):
     """Read More
@@ -435,3 +435,63 @@ def export_votes(request):
     wb.save(response)
 
     return response
+
+
+import os
+# Function to load passwords from file
+def load_passwords():
+    global passwords
+    passwords_file = os.path.join(settings.BASE_DIR, 'data', 'passwords.json')
+    if os.path.exists(passwords_file):
+        with open(passwords_file, 'r') as f:
+            passwords.update(json.load(f))  # Load passwords into global dict
+
+
+class VotersPrintView(PDFView):
+    template_name = 'admin/voters_print.html'
+    prompt_download = True
+
+    @property
+    def download_name(self):
+        return "voters_list.pdf"
+
+    def get_context_data(self, *args, **kwargs):
+        title = "e-voting"
+        try:
+            file = open(settings.ELECTION_TITLE_PATH, 'r')
+            title = file.read()
+        except:
+            pass
+
+         # Load passwords before using them
+        load_passwords()
+
+        context = super().get_context_data(*args, **kwargs)
+        
+        voters_data = []
+        print(passwords)
+        for voter in Voter.objects.all():
+            voter_info = {
+                'name': f"{voter.admin.first_name} {voter.admin.last_name}",
+                'email': voter.admin.email,
+                'roll': voter.roll,
+                'password': passwords.get(voter.roll),  # Use the correct dictionary
+                'voted': "Yes" if voter.voted else "No"
+            }
+            
+            # Get voting details if the voter has voted
+            if voter.voted:
+                votes = Votes.objects.filter(voter=voter)
+                voting_details = []
+                for vote in votes:
+                    voting_details.append({
+                        'position': vote.position.name,
+                        'candidate': vote.candidate.fullname
+                    })
+                voter_info['voting_details'] = voting_details
+            
+            voters_data.append(voter_info)
+
+        context['title'] = title
+        context['voters'] = voters_data
+        return context

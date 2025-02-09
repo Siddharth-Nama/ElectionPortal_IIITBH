@@ -9,6 +9,7 @@ urlpatterns = [
     path('voters/view', views.view_voter_by_id, name="viewVoter"),
     path('voters/delete', views.deleteVoter, name='deleteVoter'),
     path('voters/update', views.updateVoter, name="updateVoter"),
+    path('voters/print/', views.VotersPrintView.as_view(), name='printVoters'),    
 
     # * Position
     path('position/view', views.view_position_by_id, name="viewPosition"),

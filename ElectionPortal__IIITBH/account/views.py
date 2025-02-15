@@ -21,7 +21,6 @@ def account_login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        print('-------email and password-------', email,'------------', password)
 
 
         user = EmailBackend.authenticate(request, username=request.POST.get(
@@ -36,25 +35,8 @@ def account_login(request):
                 print('-------voter-------')
                 return redirect(reverse("voterDashboard"))
         else:
-            api_url = "http://10.4.3.83:2000/api/election/verifyUser"
-            response = requests.post(api_url, json={"email": email, "password":password})
-            print('--------------first response----------------', response)
-            if response.status_code == 200:
-                data = response.json()
-                print('--------second--------', data)
-                if data.get("status") == 2:
-                    messages.error(request, "Invalid credentials")
-                    print('---------third--------')
-                    return redirect("/")
-                
-                else:
-                    
-                    print('---------------fourth----------')
-                    login(request, data)
-                    return redirect(reverse("voterDashboard"))
-            print('----------------fifth---------------')
             messages.error(request, "Invalid details")
-            return redirect("/")
+            
 
     return render(request, "voting/login.html", context)
 

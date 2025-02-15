@@ -10,6 +10,16 @@
             class="btn btn-danger btn-sm btn-flat"
             ><i class="fa fa-refresh"></i> Reset</a
           >
+          <div class="pull-right">  
+            <a
+              href="{% url 'export_votes' %}"
+              data-toggle="modal"
+              class="btn btn-danger btn-sm btn-flat"
+              style="background-color: green; color: white;"
+            >
+              <i class="fa fa-download"></i> Download
+            </a>
+          </div>
         </div>
         <div class="box-body">
           <table id="example1" class="table table-bordered">
@@ -29,16 +39,7 @@
               {% endfor %}
             </tbody>
           </table>
-          <div>
-            <a
-              href="{% url 'export_votes' %}"
-              data-toggle="modal"
-              class="btn btn-danger btn-sm btn-flat"
-              style="background-color: green; color: white;"
-            >
-              <i class="fa fa-download"></i> Download
-            </a>
-          </div>
+          
         </div>
       </div>
     </div>

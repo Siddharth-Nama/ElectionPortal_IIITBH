@@ -388,7 +388,7 @@ def viewVotes(request):
 
 def resetVote(request):
     Votes.objects.all().delete()
-    Voter.objects.all().update(voted=False, verified=False, otp=None)
+    Voter.objects.all().update(voted=False)
     messages.success(request, "All votes has been reset")
     return redirect(reverse('viewVotes'))
 
@@ -405,25 +405,25 @@ def export_votes(request):
     ws.title = "Votes"
 
     # Add headers
-    headers = ['Voter\'s Name','Voter\'s email id', 'Candidate Voted For','Candidate email id', 'Position']
+    headers = ['Voter\'s Name','Voter\'s email id','Voter\'s Roll Number', 'Candidate Voted For', 'Position']
     ws.append(headers)
 
     # Retrieve votes from the database
-    votes = Votes.objects.all().order_by('candidate__position__name', 'candidate__fullname')
+    votes = Votes.objects.all().order_by('voter__roll','candidate__position__name', 'candidate__fullname')
 
     # Add data rows
     for vote in votes:
         # Extract the voter's name
         voter_name = f"{vote.voter.admin.first_name} {vote.voter.admin.last_name}"
         voter_email = vote.voter.admin.email
+        voter_roll = vote.voter.roll
         # Extract the candidate's name
         candidate_name = vote.candidate.fullname
-        candidate_email = vote.candidate.email
         # Extract the position name
         position_name = vote.position.name
 
         # Append the extracted information to the Excel sheet
-        ws.append([voter_name,voter_email, candidate_name,candidate_email, position_name])
+        ws.append([voter_name,voter_email,voter_roll, candidate_name, position_name])
 
     # Set the response headers for Excel file download
     response = HttpResponse(
@@ -470,7 +470,7 @@ class VotersPrintView(PDFView):
         
         voters_data = []
         print(passwords)
-        for voter in Voter.objects.all():
+        for voter in Voter.objects.all().order_by('roll'):
             voter_info = {
                 'name': f"{voter.admin.first_name} {voter.admin.last_name}",
                 'email': voter.admin.email,

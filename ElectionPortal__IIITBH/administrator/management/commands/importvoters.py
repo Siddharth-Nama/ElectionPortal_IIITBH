@@ -38,17 +38,17 @@ class Command(BaseCommand):
         for _, row in df.iterrows():
             print(f"Processing: {row['email']}")  # Debugging output
             # Create CustomUser first
-            password = random_password()
+            password = row['roll']
+            print(f"Password: {password}")  # Debugging output
             user = CustomUser.objects.create_user(
                 email=row['email'],
-                password=password,
+                password=row['roll'],
                 first_name=row['name'],
                 last_name=""
             )
             
             # Store password in dictionary
             passwords[row['roll']] = password
-            print(f"Password for {row['roll']}: {password}")
             
             # Create Voter with the user reference
             Voter.objects.create(

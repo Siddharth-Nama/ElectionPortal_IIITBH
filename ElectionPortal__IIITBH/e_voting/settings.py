@@ -12,10 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-import environ
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,11 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = "%6lp_p!%r$7t-2ql5hc5(r@)8u_fc+6@ugxcnz=h=b(fn#3$p9"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -83,13 +80,98 @@ WSGI_APPLICATION = 'e_voting.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
+# postgresql://postgres:[YOUR-PASSWORD]@db.fchleorlovuxzvijhcpq.supabase.co:5432/postgres
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': 'mydatabase',
     }
 }
+# import os
+# import dj_database_url
+# from dotenv import load_dotenv
+
+# load_dotenv()  # Load variables from .env file
+
+# DATABASES = {
+#     'default': dj_database_url.config(default=os.getenv("DATABASE_URL"))
+# }
+
+# import psycopg2
+# from dotenv import load_dotenv
+# import os
+
+# # Load environment variables from .env
+# load_dotenv()
+
+# # Fetch variables
+# USER = os.getenv("user")
+# PASSWORD = os.getenv("password")
+# HOST = os.getenv("host")
+# PORT = os.getenv("port")
+# DBNAME = os.getenv("dbname")
+
+# # Connect to the database
+# try:
+#     connection = psycopg2.connect(
+#         user=USER,
+#         password=PASSWORD,
+#         host=HOST,
+#         port=PORT,
+#         dbname=DBNAME
+#     )
+#     print("Connection successful!")
+    
+#     # Create a cursor to execute SQL queries
+#     cursor = connection.cursor()
+    
+#     # Example query
+#     cursor.execute("SELECT NOW();")
+#     result = cursor.fetchone()
+#     print("Current Time:", result)
+
+#     # Close the cursor and connection
+#     cursor.close()
+#     connection.close()
+#     print("Connection closed.")
+
+# except Exception as e:
+#     print(f"Failed to connect: {e}")
+
+
+# import os
+# from urllib.parse import urlparse
+
+# SUPABASE_DB_URL = "postgresql://postgres.jdujkhdwlmnlzqyxflty:Sittunama@1234@aws-0-ap-south-1.pooler.supabase.com:6543/postgres"
+
+# # Parse the database URL
+# db_url = urlparse(SUPABASE_DB_URL)
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'your_database_name',  # Replace with your Supabase DB name
+#         'USER': 'your_database_user',  # Replace with your Supabase DB username
+#         'PASSWORD': 'your_database_password',  # Replace with your Supabase DB password
+#         'HOST': 'aws-0-ap-south-1.pooler.supabase.com',  # Supabase host
+#         'PORT': '5432',  # Use port 5432 instead of 6543
+#         'OPTIONS': {
+#             'sslmode': 'require',  # Required for secure connection
+#             'connect_timeout': 10,  # Reduce timeout
+#             'keepalives': 1,
+#             'keepalives_idle': 30,
+#             'keepalives_interval': 10,
+#             'keepalives_count': 5,
+#         },
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': 'mydatabase',
+#     }
+# }
 
 
 # Password validation

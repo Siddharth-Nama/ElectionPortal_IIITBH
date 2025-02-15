@@ -42,7 +42,7 @@ class Command(BaseCommand):
             print(f"Password: {password}")  # Debugging output
             user = CustomUser.objects.create_user(
                 email=row['email'],
-                password=row['roll'],
+                password=password,
                 first_name=row['name'],
                 last_name=""
             )

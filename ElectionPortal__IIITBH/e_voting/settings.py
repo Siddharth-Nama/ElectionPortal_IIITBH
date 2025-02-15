@@ -213,14 +213,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Directory where `collectstatic` will collect files for deployment
+# Directory where `collectstatic` will collect files for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 # Directory where your app-specific static files are stored
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Your development static files folder
 ]
-# Directory where `collectstatic` will collect files for deployment
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

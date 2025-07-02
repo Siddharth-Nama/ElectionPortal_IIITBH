@@ -445,6 +445,7 @@ def load_passwords():
     if os.path.exists(passwords_file):
         with open(passwords_file, 'r') as f:
             passwords.update(json.load(f))  # Load passwords into global dict
+            print(passwords)
 
 
 class VotersPrintView(PDFView):
@@ -471,11 +472,13 @@ class VotersPrintView(PDFView):
         voters_data = []
         print(passwords)
         for voter in Voter.objects.all().order_by('roll'):
+            print("Looking for roll:", str(voter.roll))
+            print("Password found:", passwords.get(str(voter.roll)))
             voter_info = {
                 'name': f"{voter.admin.first_name} {voter.admin.last_name}",
                 'email': voter.admin.email,
                 'roll': voter.roll,
-                'password': passwords.get(voter.roll),  # Use the correct dictionary
+                'password': passwords.get(str(voter.roll)),  # Use the correct dictionary
                 'voted': "Yes" if voter.voted else "No"
             }
             

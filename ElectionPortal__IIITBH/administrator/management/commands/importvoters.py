@@ -38,7 +38,7 @@ class Command(BaseCommand):
         for _, row in df.iterrows():
             print(f"Processing: {row['email']}")  # Debugging output
             # Create CustomUser first
-            password = row['roll']
+            password = random_password()
             print(f"Password: {password}")  # Debugging output
             user = CustomUser.objects.create_user(
                 email=row['email'],
@@ -56,7 +56,8 @@ class Command(BaseCommand):
                 roll=row['roll']
             )
             print("✅ Import completed successfully!")
-
+        print("PAsswords --------------------------------------------------")
+        print(passwords)
         # Save passwords to a JSON file
         passwords_file = os.path.join(data_dir, 'passwords.json')
         with open(passwords_file, 'w') as f:

@@ -217,9 +217,10 @@ def submit_ballot(request):
     form.pop('csrfmiddlewaretoken', None)  # Pop CSRF Token
     form.pop('submit_vote', None)  # Pop Submit Button
 
+    postnum = Position.objects.all().count()
     # Ensure at least one vote is selected
-    if len(form.keys()) < 1:
-        messages.error(request, "Please select at least one candidate")
+    if len(form.keys()) < postnum:
+        messages.error(request, "Please complete voting for all positions by clicking Next")
         return redirect(reverse('show_ballot'))
     positions = Position.objects.all()
     form_count = 0
